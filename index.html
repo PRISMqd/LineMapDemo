@@ -1104,23 +1104,21 @@ function addAuditEntry(type, detail, extra = {}) {
 
 // Insertion site → SVG coordinate map (x/y as % of 180×400 SVG)
 const SITE_COORDS = {
-  // All positions pixel-verified on humanfigure.png (1599x2000)
-  // Patient RIGHT = viewer LEFT (x < 50%)
   scalp:                  { x:50,   y:6   },
   right_scalp:            { x:47,   y:6   }, left_scalp:            { x:53,   y:6   },
   midline_neck:           { x:50,   y:13  },
-  right_internal_jugular: { x:47,   y:13  }, left_internal_jugular: { x:53,   y:13  },
-  right_subclavian:       { x:42,   y:20  }, left_subclavian:       { x:58,   y:20  },
-  right_upper_arm:        { x:37,   y:28  }, left_upper_arm:        { x:63,   y:28  },
-  right_upper_extremity:  { x:37,   y:28  }, left_upper_extremity:  { x:63,   y:28  },
-  right_antecubital:      { x:37,   y:36  }, left_antecubital:      { x:63,   y:36  },
-  right_forearm:          { x:34,   y:42.5}, left_forearm:          { x:63,   y:42.5},
-  right_wrist:            { x:32,   y:50  }, left_wrist:            { x:68,   y:49  },
-  right_hand:             { x:30,   y:53  }, left_hand:             { x:70.5, y:53  },
+  right_internal_jugular: { x:53.5, y:13  }, left_internal_jugular: { x:47,   y:13  },
+  right_subclavian:       { x:58,   y:20  }, left_subclavian:       { x:42,   y:20  },
+  right_upper_arm:        { x:64,   y:28  }, left_upper_arm:        { x:36,   y:28  },
+  right_upper_extremity:  { x:64,   y:28  }, left_upper_extremity:  { x:36,   y:28  },
+  right_antecubital:      { x:63,   y:35.5}, left_antecubital:      { x:37,   y:36  },
+  right_forearm:          { x:61.5, y:44.5}, left_forearm:          { x:34,   y:42.5},
+  right_wrist:            { x:68,   y:49  }, left_wrist:            { x:32,   y:50  },
+  right_hand:             { x:70.5, y:53  }, left_hand:             { x:30,   y:53  },
   umbilical:              { x:50,   y:40  },
-  right_femoral:          { x:44,   y:57  }, left_femoral:          { x:56,   y:57  },
-  right_foot:             { x:46,   y:92  }, left_foot:             { x:54,   y:92  },
-  right_toe:              { x:46,   y:95  }, left_toe:              { x:54,   y:95  },
+  right_femoral:          { x:54,   y:58  }, left_femoral:          { x:46,   y:58  },
+  right_foot:             { x:53.5, y:94  }, left_foot:             { x:47,   y:94  },
+  right_toe:              { x:53,   y:96  }, left_toe:              { x:47,   y:96  },
   custom:                 { x:50,   y:45  },
 };
 
@@ -2430,18 +2428,11 @@ const INSERTION_SITES = [
 ];
 
 function AddLineOverlay({ prefill, onClose, onAdd, onAddMed, patient, setAuditLog }) {
-  // Auto-derive laterality from insertion_site name
-  const deriveSide = (site) => {
-    if (!site) return '';
-    if (site.startsWith('right_') || site.startsWith('right ')) return 'right';
-    if (site.startsWith('left_') || site.startsWith('left ')) return 'left';
-    return '';
-  };
   const [form, setForm] = useState({
     lineType: 'PIV',
     display_label: '',
     insertion_site: prefill?.insertion_site || '',
-    side: deriveSide(prefill?.insertion_site) || '',
+    side: '',
     anatomical_region: '',
     lumenCount: 1,
     lumens: [{ label: 'Lumen 1', size: '' }],
